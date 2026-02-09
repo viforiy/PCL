@@ -1172,6 +1172,17 @@ ExitDataLoad:
     ''' 当前按卡片分类的所有版本列表。
     ''' </summary>
     Public McInstanceList As New Dictionary(Of McInstanceCardType, List(Of McInstance))
+    Public Function FindInstanceByName(name As String) As McInstance
+        For Each kv In McInstanceList
+            For Each inst As McInstance In kv.Value
+                If inst.Name.Equals(name, StringComparison.OrdinalIgnoreCase) Then
+                    Return inst
+                End If
+            Next
+        Next
+        Return Nothing
+    End Function
+
 
 #End Region
 

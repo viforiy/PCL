@@ -168,6 +168,7 @@ Public Class CustomEvent
         写入变量
         加入房间
         检查更新
+        实例设置
     End Enum
 
     ''' <summary>
@@ -323,6 +324,15 @@ Public Class CustomEvent
 
                 Case EventType.检查更新
                     UpdateCheckByButton()
+
+                Case EventType.实例设置
+                    'EventTypew为实例设置时，EvnetData格式为PageType|PageSubType|version的组合 例：InstanceSetup|InstanceOverall|BetterMC
+                    McInstanceSelected = New McInstance(Args(2))
+                    PageInstanceLeft.Instance = McInstanceSelected
+                    Setup.Set("LaunchVersionSelect", McInstanceSelected.Name)
+                    RunInUi(Sub() FrmMain.PageChange(
+                        Args(0).ParseToEnum(Of FormMain.PageType),
+                                If(Args.Length = 1, FormMain.PageSubType.InstanceMod, Args(1).ParseToEnum(Of FormMain.PageSubType))))
 
                 Case Else
                     MyMsgBox("未知的事件类型：" & Type & vbCrLf & "请检查事件类型填写是否正确，或者 PCL 是否为最新版本。", "事件执行失败")
